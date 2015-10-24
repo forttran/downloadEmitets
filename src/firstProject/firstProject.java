@@ -10,39 +10,18 @@ import java.util.List;
 
 public class firstProject {
 	
-	public static List GenericDate(Date... dates){
+	public static Iterator<Date> GenericDate(Date... dates){
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 		Date StartDate = dates[0];
 		Date EndDate = (dates.length > 1 && dates[1] != null)?dates[1]: new Date();
-		List ArrayDate = new ArrayList<String>();
 				
-		Iterator<Date> i = new DateIterator(StartDate, EndDate);
-		while(i.hasNext()){
-			Date date = i.next();
-			System.out.println(date);
-		}
-		
-		
-		/*
-		try {
-			Date first_date = dateFormat.parse(dates);
-			Calendar c = Calendar.getInstance();
-			c.setTime(dateFormat.parse(dates));
-			c.add(Calendar.DATE, 1);  // number of days to add
-			dates = dateFormat.format(c.getTime());
-			//System.out.println(dates);
-			Date dd = new Date();
-			//if(first_date.before(dd)){
-				System.out.println(first_date+" ++++ ");
-				//System.out.println(dd);
-				//IncrementDate(dates);
-			//}
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}*/
-		
-		return null;
+		Iterator<Date> DateIterator = new DateIterator(StartDate, EndDate);
+		/*while( DateIterator.hasNext()){
+			Date date = DateIterator.next();
+			System.out.println(dateFormat.format(date));
+		}*/		
+		return DateIterator;
 	}
 	
 	public static void main(String[] args) {
@@ -53,30 +32,13 @@ public class firstProject {
 			MSSQLDATE Date = new MSSQLDATE();
 			Date.createStructure(date.preloader(date.emitetsRead()));*/
 
-			//http://195.128.78.52/GAZP_141212_141212.txt?
-			//market=1
 			
-			//&em=16842
-			//&code=GAZP
-			//&df=12&mf=11&yf=2014&from=12.12.2014
-			//&dt=12&mt=11&yt=2014&to=12.12.2014
-			
-			//&p=1
-			//&f=GAZP_141212_141212
-			//&e=.txt
-			
-			//&cn=GAZP
-			
-			//&dtf=1&tmf=1
-			//&MSOR=0&
-			//mstime=on&mstimever=1&
-			//sep=1&sep2=1
-			//&datf=9"
 			
 			Calendar cal = Calendar.getInstance();
 			cal.set(2011, Calendar.JANUARY, 1);
 			Date dates = cal.getTime();
 			GenericDate(dates);
+			
 			httpRequest date = new httpRequest("http://195.128.78.52/GAZP_141212_141212.txt?market=1&em=16842&code=GAZP&df=12&mf=11&yf=2014&from=12.12.2014&dt=12&mt=11&yt=2014&to=12.12.2014&p=1&f=GAZP_141212_141212&e=.txt&cn=GAZP&dtf=1&tmf=1&MSOR=0&mstime=on&mstimever=1&sep=1&sep2=1&datf=9");
 			/*Long b = System.currentTimeMillis() - a;
 			System.out.println("приконнектились " + b);
