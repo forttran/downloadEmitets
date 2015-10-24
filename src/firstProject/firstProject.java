@@ -34,7 +34,7 @@ public class firstProject {
 	public static void main(String[] args) {
 		try {
 			Long a = System.currentTimeMillis();
-			//123
+			//тра та тата
 			//Три строки для создания структуры
 			/*httpRequest date = new httpRequest("http://www.finam.ru/cache/icharts/icharts.js");
 			MSSQLDATE Date = new MSSQLDATE();
