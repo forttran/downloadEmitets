@@ -65,20 +65,9 @@ public class httpRequest {
 		}
 		return null;
 	}
-	
-	public void PrintInFile(String nameFile){//перенаправление потока вывода в фаил
-		PrintStream st;
-		try {
-			st = new PrintStream(new FileOutputStream(nameFile));
-			System.setErr(st);
-			System.setOut(st);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
+		
 	public ArrayList<emitets> preloader(ArrayList<String[]> date){//"Транспонируем" матрицу данных
-		PrintInFile("1.txt");
+		Prints.PrintInFile("1.txt");
 		ArrayList<emitets> emitet = new ArrayList<emitets>();
 		for(int i=0;i<date.get(3).length;i++){
 			if(date.get(3)[i].equals("1")){
