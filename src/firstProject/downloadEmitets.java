@@ -30,7 +30,7 @@ public class downloadEmitets {
 				while( DateIterator.hasNext()){
 					Date date = DateIterator.next();
 					//generateURL(Emitet, date);
-					new onlyDateEmitets(generateURL(Emitet, date));
+					new onlyDateEmitets(generateURL(Emitet, date),Emitet.codes);
 					System.out.println(generateURL(Emitet, date));
 					i++;
 				}
