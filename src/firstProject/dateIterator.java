@@ -7,12 +7,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
-public class âateIterator implements Iterator<Date>, Iterable<Date>{
+public class dateIterator implements Iterator<Date>, Iterable<Date>{
 
 	private Calendar end = Calendar.getInstance();
 	private Calendar current = Calendar.getInstance();
 	
-	public âateIterator(Date start, Date end){
+	public dateIterator(Date start, Date end){
 		this.end.setTime(end);
 		this.end.add(Calendar.DATE, -1);
 		this.current.setTime(start);
