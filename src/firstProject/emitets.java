@@ -9,6 +9,5 @@ public class emitets {
 	public String codes;
 	public String toString(){
 		return names;
-		
 	}
 }

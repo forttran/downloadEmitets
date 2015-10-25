@@ -6,7 +6,7 @@ import java.util.List;
 
 public class onlyDateEmitets {
 	public onlyDateEmitets(String url) throws IOException{
-		/*Long a = System.currentTimeMillis();
+		Long a = System.currentTimeMillis();
 		httpRequest date = new httpRequest(url);
 		Long b = System.currentTimeMillis() - a;
 		System.out.println("приконнектились " + b);
@@ -19,6 +19,6 @@ public class onlyDateEmitets {
 		Date.InsertDate("GAZP", dt);
 		
 		b = System.currentTimeMillis() - a;
-		System.out.println("Закончили запись " + b);*/
+		System.out.println("Закончили запись " + b);
 	}
 }
