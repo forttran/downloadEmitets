@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class msSqlDate {
-	public String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=myFirst;user=forttran;password=123;";
 	public Connection con = null;
 	public Statement stmt = null;
-	public ResultSet rs = null;
+	public boolean rs;
 	public Boolean quation = false;
 	public List<String[]> data;
 	
@@ -19,20 +18,11 @@ public class msSqlDate {
 		connect();
 	}
 	public void connect() {//коннектимся
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			con = DriverManager.getConnection(connectionUrl);
-			//InsertDate();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		con = new connect().getConnector(); 
 	}
 	
 	public void createStructure(ArrayList<emitets> date){//создание таблиц с названием эмитетов и их ID
 		PreparedStatement pstmt;
-		boolean rs;
 		try {
 			pstmt = con.prepareStatement("{call CreateEmitetsStructure()}");//Создание сводной таблицы
 			rs = pstmt.execute(); 
@@ -51,7 +41,6 @@ public class msSqlDate {
 	
 	public void InsertDate(String nameTable, List<String[]> date) {//функция добавления котировок в таблицы.
 		PreparedStatement pstmt;
-		boolean rs;
 		try {
 			pstmt = con.prepareStatement("{call AddEmitets(?,?,?,?,?)}");
 			int i=0;
@@ -66,7 +55,6 @@ public class msSqlDate {
 			}
 			System.out.println("Добавлено: " + i);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

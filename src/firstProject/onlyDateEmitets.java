@@ -13,7 +13,7 @@ public class onlyDateEmitets {
 		List<String[]> dt = date.httpRead();
 		 b = System.currentTimeMillis() - a;
 		System.out.println("Получили данные " + b);
-		MSSQLDATE Date = new MSSQLDATE();
+		msSqlDate Date = new msSqlDate();
 		b = System.currentTimeMillis() - a;
 		System.out.println("Законектились к базе " + b);
 		Date.InsertDate("GAZP", dt);
