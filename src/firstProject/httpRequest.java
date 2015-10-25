@@ -77,12 +77,12 @@ public class httpRequest {
 		}
 	}
 	
-	public ArrayList<Emitets> preloader(ArrayList<String[]> date){//"Транспонируем" матрицу данных
+	public ArrayList<emitets> preloader(ArrayList<String[]> date){//"Транспонируем" матрицу данных
 		PrintInFile("1.txt");
-		ArrayList<Emitets> emitet = new ArrayList<Emitets>();
+		ArrayList<emitets> emitet = new ArrayList<emitets>();
 		for(int i=0;i<date.get(3).length;i++){
 			if(date.get(3)[i].equals("1")){
-				Emitets emitets = new Emitets();
+				emitets emitets = new emitets();
 				//System.out.println(date.get(3)[i]+" "+date.get(0)[i] + " " + date.get(1)[i]+" "+date.get(2)[i]);
 				emitets.id = date.get(0)[i];
 				emitets.names = date.get(1)[i];

@@ -4,8 +4,8 @@ package firstProject;
 import java.io.IOException;
 import java.util.List;
 
-public class OnlyDateEmitets {
-	public OnlyDateEmitets(String url) throws IOException{
+public class onlyDateEmitets {
+	public onlyDateEmitets(String url) throws IOException{
 		/*Long a = System.currentTimeMillis();
 		httpRequest date = new httpRequest(url);
 		Long b = System.currentTimeMillis() - a;

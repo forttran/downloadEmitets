@@ -3,7 +3,7 @@
  */
 package firstProject;
 
-public class Emitets {
+public class emitets {
 	public String id;
 	public String names;
 	public String codes;

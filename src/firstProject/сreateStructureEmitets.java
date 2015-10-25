@@ -5,8 +5,8 @@ package firstProject;
 
 import java.io.IOException;
 
-public class CreateStructureEmitets {
-	public CreateStructureEmitets() throws IOException{
+public class ñreateStructureEmitets {
+	public ñreateStructureEmitets() throws IOException{
 		//Òğè ñòğîêè äëÿ ñîçäàíèÿ ñòğóêòóğû
 		/*httpRequest date = new httpRequest("http://www.finam.ru/cache/icharts/icharts.js");
 		MSSQLDATE Dates = new MSSQLDATE();

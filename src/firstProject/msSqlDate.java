@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MSSQLDATE {
+public class msSqlDate {
 	public String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=myFirst;user=forttran;password=123;";
 	public Connection con = null;
 	public Statement stmt = null;
@@ -15,7 +15,7 @@ public class MSSQLDATE {
 	public Boolean quation = false;
 	public List<String[]> data;
 	
-	public MSSQLDATE(){
+	public msSqlDate(){
 		connect();
 	}
 	public void connect() {//коннектимся
@@ -30,14 +30,14 @@ public class MSSQLDATE {
 		}
 	}
 	
-	public void createStructure(ArrayList<Emitets> date){//создание таблиц с названием эмитетов и их ID
+	public void createStructure(ArrayList<emitets> date){//создание таблиц с названием эмитетов и их ID
 		PreparedStatement pstmt;
 		boolean rs;
 		try {
 			pstmt = con.prepareStatement("{call CreateEmitetsStructure()}");//Создание сводной таблицы
 			rs = pstmt.execute(); 
 			pstmt = con.prepareStatement("{call AddEmitetsStructure(?,?,?,?)}");//генерирование всех таблиц
-			for(Emitets emitets:date){
+			for(emitets emitets:date){
 				pstmt.setInt(1, 1);
 				pstmt.setInt(2, new Integer(emitets.id));
 				pstmt.setString(3, emitets.names);
