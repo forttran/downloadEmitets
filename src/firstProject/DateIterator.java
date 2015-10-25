@@ -1,3 +1,6 @@
+/*
+ * Реализация генератора для перебора дат. 
+ */
 package firstProject;
 
 import java.util.Calendar;
