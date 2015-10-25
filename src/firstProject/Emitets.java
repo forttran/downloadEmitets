@@ -1,3 +1,6 @@
+/*
+ * класс-структура для одного эмитета
+ */
 package firstProject;
 
 public class Emitets {
