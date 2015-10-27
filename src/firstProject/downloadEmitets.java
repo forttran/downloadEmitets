@@ -49,7 +49,7 @@ public class downloadEmitets {
 		return DateIterator;
 	}
 	
-	@SuppressWarnings("static-access")
+
 	public String generateURL(emitets Emitet, Date date){//генерируем ссылку
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		String dt = dateFormat.format(date).toString();

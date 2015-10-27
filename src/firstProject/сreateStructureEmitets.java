@@ -8,8 +8,8 @@ import java.io.IOException;
 public class ñreateStructureEmitets {
 	public ñreateStructureEmitets() throws IOException{
 		//Òğè ñòğîêè äëÿ ñîçäàíèÿ ñòğóêòóğû
-		/*httpRequest date = new httpRequest("http://www.finam.ru/cache/icharts/icharts.js");
+		httpRequest date = new httpRequest("http://www.finam.ru/cache/icharts/icharts.js");
 		msSqlDate Dates = new msSqlDate();
-		Dates.createStructure(date.preloader(date.emitetsRead()));*/
+		Dates.createStructure(date.preloader(date.emitetsRead()));
 	}
 }

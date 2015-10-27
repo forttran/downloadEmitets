@@ -7,6 +7,8 @@ package firstProject;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -20,35 +22,47 @@ public class mainDesktop extends javax.swing.JFrame {
 	public mainDesktop(){
 		createGUI();
 	}
-	public void addEvent(JMenuItem menu, Event ev){
-		menu.addActionListener(new ActionListener() {           
+
+	public JMenuItem addMenuItem(JMenu Menu, String name, Font font, Event ev){//создание элемента подменю и события.
+		JMenuItem newMenu = new JMenuItem(name);
+		newMenu.setFont(font);
+		Menu.add(newMenu);
+		newMenu.addActionListener(new ActionListener() {           
 			public void actionPerformed(ActionEvent e) {
 				ev.events();             
 			}           
 		});
+		return newMenu;
 	}
 	public JMenu StructureMenu(Font font){//меню генерации структуры
 		JMenu StructureMenu = new JMenu("Generate");
 		StructureMenu.setFont(font);
 		
-		JMenuItem newMenu = new JMenuItem("Download structure");
-		newMenu.setFont(font);
-		StructureMenu.add(newMenu);		
+		addMenuItem(StructureMenu,"Download structure", font, new Event(){ 
+			public void events() {
+				try {
+					new сreateStructureEmitets();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});	
 		
-		JMenuItem openItem = new JMenuItem("Delete structure");
-		openItem.setFont(font);
-		StructureMenu.add(openItem);
-				
-		StructureMenu.addSeparator();
+		addMenuItem(StructureMenu,"Delete structure", font, new Event(){ 
+			public void events() {
+				try {
+					new DeleteStructureEmitets();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});	
 		
-		JMenuItem exitItem = new JMenuItem("Exit");
-		exitItem.setFont(font);
-		StructureMenu.add(exitItem);
-		addEvent(exitItem,new Event(){ 
+		addMenuItem(StructureMenu,"Exit", font, new Event(){ 
 			public void events() {
 				System.exit(0);
 			}
-		});
+		});	
 		
 		return StructureMenu;
 	}
@@ -57,18 +71,23 @@ public class mainDesktop extends javax.swing.JFrame {
 		JMenu DownloadMenu = new JMenu("Download");
 		DownloadMenu.setFont(font);
 		
-		JMenuItem loadMenu = new JMenuItem("Download");
-		loadMenu.setFont(font);
-		DownloadMenu.add(loadMenu);		
+		addMenuItem(DownloadMenu,"Download", font, new Event(){ 
+			public void events() {
+				System.exit(0);
+			}
+		});	
 		
-		JMenuItem reloadItem = new JMenuItem("Reload");
-		reloadItem.setFont(font);
-		DownloadMenu.add(reloadItem);
-				
+		addMenuItem(DownloadMenu,"Reload", font, new Event(){ 
+			public void events() {
+				System.exit(0);
+			}
+		});	
 		
-		JMenuItem verificationItem = new JMenuItem("Verification");
-		verificationItem.setFont(font);
-		DownloadMenu.add(verificationItem);
+		addMenuItem(DownloadMenu,"Verification", font, new Event(){ 
+			public void events() {
+				System.exit(0);
+			}
+		});	
 		
 		return DownloadMenu;
 	}
@@ -76,6 +95,13 @@ public class mainDesktop extends javax.swing.JFrame {
 	public JMenu PreferencesMenu(Font font){//меню настроек
 		JMenu PreferencesMenu = new JMenu("Preferences");
 		PreferencesMenu.setFont(font);	
+		
+		addMenuItem(PreferencesMenu,"Preferences", font, new Event(){ 
+			public void events() {
+				System.exit(0);
+			}
+		});	
+		
 		return PreferencesMenu;
 	}
 	
