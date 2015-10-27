@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
-public class downloadEmitets {
+public class downloadEmitets{
 	
 	public downloadEmitets() throws IOException{//Пока функция реализует вложенный массив для перебора всех эмитетов и дат
 		ArrayList<emitets> Emitets = new ArrayList<emitets>();
@@ -24,7 +24,7 @@ public class downloadEmitets {
 			int i=0;
 			for(emitets Emitet:Emitets){
 				Calendar cal = Calendar.getInstance();
-				cal.set(2011, Calendar.JANUARY, 1);
+				cal.set(2000, Calendar.JANUARY, 1);
 				Date dates = cal.getTime();
 				DateIterator = GenericDate(dates);
 				while( DateIterator.hasNext()){
