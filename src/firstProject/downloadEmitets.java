@@ -13,32 +13,77 @@ import java.util.Iterator;
 
 public class downloadEmitets{
 	
-	public downloadEmitets() throws IOException{//Пока функция реализует вложенный массив для перебора всех эмитетов и дат
-		ArrayList<emitets> Emitets = new ArrayList<emitets>();
-		Iterator<Date> DateIterator;
+	public ArrayList<emitets> Emitets = new ArrayList<emitets>();
+	public Iterator<Date> DateIterator;
+	public listEmitets listEm = new listEmitets();
+	private Calendar calendar = Calendar.getInstance();
+	
+	public downloadEmitets() throws IOException{//при создании объекта зупускаем функцию 
+		start();
+	}
+	
+	public int getDays(Date start, Date end){ // Сравниваем две даты
+		calendar.setTime(start);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+	    
+		long l = calendar.getTimeInMillis();
+	    
+		calendar.setTime(end);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+	    
+		l = calendar.getTimeInMillis() - l;
+		return (int) (l / (24 * 60 * 60 * 1000));
+	}
+	public cortegDataLoad datesLoad(readDateFile rDF){//осуществляем все операции с датами
+		Calendar cal1 = Calendar.getInstance();
+		Calendar cal2 = Calendar.getInstance();
 		
-		listEmitets listEm = new listEmitets();
-		//Prints.PrintInFile("2.txt");
+		if(rDF.dates!=null)
+			cal1.setTime(rDF.dates);
+		else
+			cal1.set(2000, Calendar.JANUARY, 1);
+		
+		Date dates1 = cal1.getTime();
+		Date dates2 = cal2.getTime();
+		Iterator<Date> Idate = GenericDate(dates1);
+		int days = getDays(dates1, dates2);
+		System.out.println("days = "+days);
+		return new cortegDataLoad(cal1, cal2, Idate, days);
+	}
+	
+	public void start() throws IOException{//Пока функция реализует вложенный массив для перебора всех эмитетов и дат
+		mainDesktop mD = mainDesktop.getInstance();
+		controlThread cTh = controlThread.getInstance();
+		
 		try {
 			Emitets = listEm.getEmitets();
-			int i=0;
-			for(emitets Emitet:Emitets){
-				Calendar cal = Calendar.getInstance();
-				cal.set(2000, Calendar.JANUARY, 1);
-				Date dates = cal.getTime();
-				DateIterator = GenericDate(dates);
+			readDateFile rDF = new readDateFile(Emitets);
+			for(int i=rDF.poz;i<Emitets.size();i++){
+				cortegDataLoad cDL = datesLoad(rDF);
+				DateIterator = cDL.dates;
+				mD.JPr.setMaximum(cDL.days);
+				//mD.JPr.setMaximum(10);
+				int j=0;
+
 				while( DateIterator.hasNext()){
 					Date date = DateIterator.next();
-					//generateURL(Emitet, date);
-					new onlyDateEmitets(generateURL(Emitet, date),Emitet.codes);
-					System.out.println(generateURL(Emitet, date));
-					i++;
+					cTh.closeThead("loadEmitets", Emitets.get(i).codes, date);
+					new onlyDateEmitets(generateURL(Emitets.get(i), date),Emitets.get(i).codes);
+					System.out.println(generateURL(Emitets.get(i), date));					
+					mD.JPr.setValue(j++);
+					System.out.println("Jpr=" + mD.JPr.getValue());
+					System.out.println("j=" + j);
 				}
 			}
-			System.out.println(i);
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 	}
 	
 	public Iterator<Date> GenericDate(Date... dates){//Создаем итератор дат. Если вторая не задана берем текущую дату

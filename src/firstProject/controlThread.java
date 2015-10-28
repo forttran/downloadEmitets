@@ -1,8 +1,9 @@
 package firstProject;
 
+import java.util.Date;
 import java.util.HashMap;
 
-public class controlThread {
+public class controlThread{
 	private static controlThread  instance;
 	private HashMap<String, Thread> ThMap = new HashMap< String, Thread>(); 
 	public static controlThread  getInstance() {
@@ -17,5 +18,15 @@ public class controlThread {
 	public Thread setMap(String key){
 		Thread Th = ThMap.get(key);
 		return Th;
+	}
+	public void closeThead(String nameThread,String codes, Date date){
+		Thread ThLoad = setMap(nameThread);
+		if(ThLoad.isInterrupted()){
+			System.out.println("прерываюсь");
+			new writeDateFile(codes, date);
+			System.out.println("записал");
+			ThMap.remove(nameThread);
+			ThLoad.stop();
+		}
 	}
 }

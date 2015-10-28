@@ -8,25 +8,25 @@ import java.util.List;
 
 public class onlyDateEmitets {
 	public onlyDateEmitets(String url,String code) throws IOException{
-		Long a = System.currentTimeMillis();
+		//Long a = System.currentTimeMillis();
 		httpRequest date = new httpRequest(url);
-		Long b = System.currentTimeMillis() - a;
-		System.out.println("приконнектились " + b);
+		//Long b = System.currentTimeMillis() - a;
+		//System.out.println("приконнектились " + b);
 		List<String[]> dt = date.httpRead();
-		for(String[] s:dt){
+		/*for(String[] s:dt){
 			for(String str:s){
 				System.out.print(str+" ");
 			}
 			System.out.println("");
-		}
-		 b = System.currentTimeMillis() - a;
-		System.out.println("Получили данные " + b);
+		}*/
+		// b = System.currentTimeMillis() - a;
+		//System.out.println("Получили данные " + b);
 		msSqlDate Date = new msSqlDate();
-		b = System.currentTimeMillis() - a;
-		System.out.println("Законектились к базе " + b);
+		//b = System.currentTimeMillis() - a;
+		//System.out.println("Законектились к базе " + b);
 		Date.InsertDate(code, dt);
 		
-		b = System.currentTimeMillis() - a;
-		System.out.println("Закончили запись " + b);
+		//Long b = System.currentTimeMillis() - a;
+		//System.out.println("Закончили запись " + b);
 	}
 }

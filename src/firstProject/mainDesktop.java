@@ -18,12 +18,25 @@ import javax.swing.event.ListSelectionListener;
 @SuppressWarnings("serial")
 public class mainDesktop extends javax.swing.JFrame {
 	
-	public JFrame frame = new JFrame("Загрузка котировок");
+	private static mainDesktop instance;
 	
-	public mainDesktop(){
+	public JFrame frame = new JFrame("Загрузка котировок");
+	public JPanel JP;
+	public JPanel JP1;
+	public JPanel JP2;
+	public JProgressBar JPr;
+	
+	public static mainDesktop  getInstance() {
+		if (instance == null) {
+			instance = new  mainDesktop();
+		}
+		return instance;
+	}
+	
+	private mainDesktop(){
 		createGUI();
 	}
-
+		
 	public JMenuItem addMenuItem(JMenu Menu, String name, Font font, boolean enable, Event ev){//создание элемента подменю и события.
 		JMenuItem newMenu = new JMenuItem(name);
 		newMenu.setEnabled(enable);
@@ -36,6 +49,7 @@ public class mainDesktop extends javax.swing.JFrame {
 		});
 		return newMenu;
 	}
+	
 	public JMenu StructureMenu(Font font){//меню генерации структуры
 		JMenu StructureMenu = new JMenu("Generate");
 		StructureMenu.setFont(font);
@@ -53,7 +67,17 @@ public class mainDesktop extends javax.swing.JFrame {
 		addMenuItem(StructureMenu,"Delete structure", font, сreateStructureEmitets.isCreate(), new Event(){ 
 			public void events() {
 				try {
-					new DeleteStructureEmitets();
+					Object[] options = {"Да, уверен", "Нет, не уверен"};
+					int n = JOptionPane.showOptionDialog(frame,
+							"Вы уверены что хотите удалить структуру?",
+							"Удаление структуры",
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE,
+							null,
+							options, 
+							options[0]);
+					if(n==0)
+						new DeleteStructureEmitets();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -63,21 +87,30 @@ public class mainDesktop extends javax.swing.JFrame {
 		addMenuItem(StructureMenu,"Exit", font, true, new Event(){ 
 			public void events() {
 				controlThread cTh = controlThread.getInstance();
-				cTh.setMap("loadEmitets").stop();
-				System.exit(0);
+				cTh.setMap("loadEmitets").interrupt();
+				System.out.println("Нажал на крестик");
+				//System.exit(0);
 			}
 		});	
 		
 		return StructureMenu;
 	}
-	private void CreateJListEmitets() {
+	private void CreateJListEmitets() {//Cоздание списка эмитетов
+		JP = new JPanel(new GridLayout(2,0));
+		JP1 = new JPanel(new FlowLayout());
+		JP2 = new JPanel(new GridLayout(1,0));
+		JPr = new JProgressBar();
+		JPr.setMinimum(0);
+		JP1.add(JPr);
+		
+		
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		JList<String> JL = new JList<String>(model);
 		JScrollPane JS = new JScrollPane(JL);
 		try {
 			ArrayList<emitets> AL = new listEmitets().getEmitets();
 			for(emitets em: AL){
-				model.addElement(em.names);
+				model.addElement(em.codes);
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -88,10 +121,14 @@ public class mainDesktop extends javax.swing.JFrame {
 				JOptionPane.showMessageDialog(frame, element);
 			}
 		});
-
-		frame.getContentPane().add(JS);
+		
+		JP.add(JP1);
+		JP.add(JP2);
+		JP2.add(JS);
+		frame.getContentPane().add(JP);
 		frame.repaint();
 		frame.revalidate();
+		
          
 	}
 	public JMenu DownloadMenu(Font font){//меню загрузки
@@ -100,21 +137,23 @@ public class mainDesktop extends javax.swing.JFrame {
 		
 		addMenuItem(DownloadMenu,"Download", font, true, new Event(){ 
 			public void events() {
-				Thread loadEmitets = new java.lang.Thread(new Runnable() {
+				Thread loadEmitets = new Thread(new Runnable() {
 					public void run() {
-						CreateJListEmitets();
-						/*try {
-							
-							//new downloadEmitets();
+						try {							
+							CreateJListEmitets();
+							//ObjectInputStream in =  new ObjectInputStream (new FileInputStream("objects.dat"));
+							//downloadEmitets rc2 = (downloadEmitets)in.readObject();
+							//rc2.start();
+							new downloadEmitets().start();
+							//System.out.println(rc2);
 						} catch (IOException e) {
 							e.printStackTrace();
-						}*/
+						} 
 					}
 				});
 				controlThread cTh = controlThread.getInstance();
 				cTh.getMap("loadEmitets", loadEmitets);
 				cTh.setMap("loadEmitets").start();
-				//loadEmitets.start();
 			}
 		});	
 		
@@ -149,7 +188,6 @@ public class mainDesktop extends javax.swing.JFrame {
 	public void createGUI() {//Создаем меню с помощбю вспомогательных методов.
 		
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Font font = new Font("Verdana", Font.PLAIN, 11);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -168,5 +206,25 @@ public class mainDesktop extends javax.swing.JFrame {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter(){
+			public void windowClosing(WindowEvent event) {
+				Thread cTh = controlThread.getInstance().setMap("loadEmitets");
+				if(cTh == null){
+					System.exit(0);
+				}else{
+					Object[] options = { "Да", "Нет!" };
+					int n = JOptionPane.showOptionDialog(
+							event.getWindow(), 
+							"Идет скачивание котировок. Остановить процесс?",
+							"Подтверждение", 
+							JOptionPane.YES_NO_OPTION, 
+							JOptionPane.QUESTION_MESSAGE, 
+							null, options, options[0]);
+					if(n==0)
+						cTh.interrupt();
+				}
+			}
+		});
 	}
 }
