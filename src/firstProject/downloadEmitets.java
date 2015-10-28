@@ -68,7 +68,6 @@ public class downloadEmitets{
 				cortegDataLoad cDL = datesLoad(rDF);
 				DateIterator = cDL.dates;
 				mD.JPr.setMaximum(cDL.days);
-				//mD.JPr.setMaximum(10);
 				int j=0;
 
 				while( DateIterator.hasNext()){
@@ -77,8 +76,6 @@ public class downloadEmitets{
 					new onlyDateEmitets(generateURL(Emitets.get(i), date),Emitets.get(i).codes);
 					System.out.println(generateURL(Emitets.get(i), date));					
 					mD.JPr.setValue(j++);
-					System.out.println("Jpr=" + mD.JPr.getValue());
-					System.out.println("j=" + j);
 				}
 			}
 		} catch (SQLException e) {

@@ -1,6 +1,5 @@
 package firstProject;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
@@ -38,9 +37,6 @@ public class readDateFile {
 					this.poz = i;
 				}
 			}
-			System.out.println("code = "+code);
-			//System.out.println("date = " + dates);
-			System.out.println("poz = " + poz);
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Не найдены файлы code.txt и date.txt...");

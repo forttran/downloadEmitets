@@ -6,7 +6,6 @@ package firstProject;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -56,53 +55,32 @@ public class mainDesktop extends javax.swing.JFrame {
 		
 		addMenuItem(StructureMenu,"Download structure", font, !сreateStructureEmitets.isCreate(), new Event(){ 
 			public void events() {
-				try {
-					new сreateStructureEmitets();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				new сreateStructureEmitets();
 			}
 		});	
 		
 		addMenuItem(StructureMenu,"Delete structure", font, сreateStructureEmitets.isCreate(), new Event(){ 
 			public void events() {
-				try {
-					Object[] options = {"Да, уверен", "Нет, не уверен"};
-					int n = JOptionPane.showOptionDialog(frame,
-							"Вы уверены что хотите удалить структуру?",
-							"Удаление структуры",
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE,
-							null,
-							options, 
-							options[0]);
-					if(n==0)
-						new DeleteStructureEmitets();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				new DeleteStructureEmitets();
 			}
 		});	
 		
 		addMenuItem(StructureMenu,"Exit", font, true, new Event(){ 
 			public void events() {
-				controlThread cTh = controlThread.getInstance();
-				cTh.setMap("loadEmitets").interrupt();
-				System.out.println("Нажал на крестик");
-				//System.exit(0);
+				Close();
 			}
 		});	
 		
 		return StructureMenu;
 	}
-	private void CreateJListEmitets() {//Cоздание списка эмитетов
+	
+	public void CreateJListEmitets() {//Cоздание списка эмитетов
 		JP = new JPanel(new GridLayout(2,0));
 		JP1 = new JPanel(new FlowLayout());
 		JP2 = new JPanel(new GridLayout(1,0));
 		JPr = new JProgressBar();
 		JPr.setMinimum(0);
 		JP1.add(JPr);
-		
 		
 		DefaultListModel<String> model = new DefaultListModel<String>();
 		JList<String> JL = new JList<String>(model);
@@ -127,30 +105,16 @@ public class mainDesktop extends javax.swing.JFrame {
 		JP2.add(JS);
 		frame.getContentPane().add(JP);
 		frame.repaint();
-		frame.revalidate();
-		
-         
+		frame.revalidate();    
 	}
+		
 	public JMenu DownloadMenu(Font font){//меню загрузки
 		JMenu DownloadMenu = new JMenu("Download");
 		DownloadMenu.setFont(font);
 		
 		addMenuItem(DownloadMenu,"Download", font, true, new Event(){ 
 			public void events() {
-				Thread loadEmitets = new Thread(new Runnable() {
-					public void run() {
-						try {							
-							CreateJListEmitets();
-							//ObjectInputStream in =  new ObjectInputStream (new FileInputStream("objects.dat"));
-							//downloadEmitets rc2 = (downloadEmitets)in.readObject();
-							//rc2.start();
-							new downloadEmitets().start();
-							//System.out.println(rc2);
-						} catch (IOException e) {
-							e.printStackTrace();
-						} 
-					}
-				});
+				Thread loadEmitets = new Thread(new ThreadDownloadEmitets());
 				controlThread cTh = controlThread.getInstance();
 				cTh.getMap("loadEmitets", loadEmitets);
 				cTh.setMap("loadEmitets").start();
@@ -201,7 +165,6 @@ public class mainDesktop extends javax.swing.JFrame {
 			menuBar.add(m);
 		
 		frame.setJMenuBar(menuBar);
-		//CreateJListEmitets();
 		frame.setPreferredSize(new Dimension(270, 225));
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -209,22 +172,27 @@ public class mainDesktop extends javax.swing.JFrame {
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter(){
 			public void windowClosing(WindowEvent event) {
-				Thread cTh = controlThread.getInstance().setMap("loadEmitets");
-				if(cTh == null){
-					System.exit(0);
-				}else{
-					Object[] options = { "Да", "Нет!" };
-					int n = JOptionPane.showOptionDialog(
-							event.getWindow(), 
-							"Идет скачивание котировок. Остановить процесс?",
-							"Подтверждение", 
-							JOptionPane.YES_NO_OPTION, 
-							JOptionPane.QUESTION_MESSAGE, 
-							null, options, options[0]);
-					if(n==0)
-						cTh.interrupt();
-				}
+				Close();
 			}
 		});
 	}
+	
+	public void Close(){
+		Thread cTh = controlThread.getInstance().setMap("loadEmitets");
+		if(cTh == null){
+			System.exit(0);
+		}else{
+			Object[] options = { "Да", "Нет!" };
+			int n = JOptionPane.showOptionDialog(
+					null, 
+					"Идет скачивание котировок. Остановить процесс?",
+					"Подтверждение", 
+					JOptionPane.YES_NO_OPTION, 
+					JOptionPane.QUESTION_MESSAGE, 
+					null, options, options[0]);
+			if(n==0)
+				cTh.interrupt();
+		}
+	}
+	
 }

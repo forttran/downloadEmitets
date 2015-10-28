@@ -10,11 +10,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ñreateStructureEmitets {
-	public ñreateStructureEmitets() throws IOException{
+	public ñreateStructureEmitets(){
 		//Òğè ñòğîêè äëÿ ñîçäàíèÿ ñòğóêòóğû
-		httpRequest date = new httpRequest("http://www.finam.ru/cache/icharts/icharts.js");
-		msSqlDate Dates = new msSqlDate();
-		Dates.createStructure(date.preloader(date.emitetsRead()));
+		try {
+			httpRequest date = new httpRequest("http://www.finam.ru/cache/icharts/icharts.js");
+			msSqlDate Dates = new msSqlDate();
+			Dates.createStructure(date.preloader(date.emitetsRead()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	public static boolean isCreate(){
 		boolean flag = false;
