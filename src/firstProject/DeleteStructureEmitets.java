@@ -1,5 +1,6 @@
 package firstProject;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,13 +24,21 @@ public class DeleteStructureEmitets {
 				options, 
 				options[0]);
 			if(n==0){
+				File file1 = new File("code.txt");
+				File file2 = new File("date.txt");
+				file1.delete();
+				file2.delete();
 				con = new connect().getConnector(); 
 				pstmt = con.prepareStatement("{call DeleteEmitets()}");
 				rs = pstmt.execute(); 
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}catch(Exception e){
+    		e.printStackTrace();
+    		System.out.println("Фаилы не удалены");
+    	}		
 	}
 }

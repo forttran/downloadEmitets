@@ -24,6 +24,7 @@ public class mainDesktop extends javax.swing.JFrame {
 	public JPanel JP1;
 	public JPanel JP2;
 	public JProgressBar JPr;
+	public ArrayList<JMenu> menu = new ArrayList<JMenu>();
 	
 	public static mainDesktop  getInstance() {
 		if (instance == null) {
@@ -55,12 +56,18 @@ public class mainDesktop extends javax.swing.JFrame {
 		
 		addMenuItem(StructureMenu,"Download structure", font, !ñreateStructureEmitets.isCreate(), new Event(){ 
 			public void events() {
+				menu.get(0).getItem(0).setEnabled(false);
+				menu.get(0).getItem(1).setEnabled(true);
+				menu.get(1).getItem(0).setEnabled(true);
 				new ñreateStructureEmitets();
 			}
 		});	
 		
 		addMenuItem(StructureMenu,"Delete structure", font, ñreateStructureEmitets.isCreate(), new Event(){ 
 			public void events() {
+				menu.get(0).getItem(0).setEnabled(true);
+				menu.get(0).getItem(1).setEnabled(false);
+				menu.get(1).getItem(0).setEnabled(false);
 				new DeleteStructureEmitets();
 			}
 		});	
@@ -111,9 +118,9 @@ public class mainDesktop extends javax.swing.JFrame {
 	public JMenu DownloadMenu(Font font){//ìåíþ çàãðóçêè
 		JMenu DownloadMenu = new JMenu("Download");
 		DownloadMenu.setFont(font);
-		
-		addMenuItem(DownloadMenu,"Download", font, true, new Event(){ 
+		addMenuItem(DownloadMenu,"Download", font, false, new Event(){ 
 			public void events() {
+				menu.get(1).getItem(0).setEnabled(false);
 				Thread loadEmitets = new Thread(new ThreadDownloadEmitets());
 				controlThread cTh = controlThread.getInstance();
 				cTh.getMap("loadEmitets", loadEmitets);
@@ -121,13 +128,13 @@ public class mainDesktop extends javax.swing.JFrame {
 			}
 		});	
 		
-		addMenuItem(DownloadMenu,"Reload", font, true, new Event(){ 
+		addMenuItem(DownloadMenu,"Reload", font, false, new Event(){ 
 			public void events() {
 				System.exit(0);
 			}
 		});	
 		
-		addMenuItem(DownloadMenu,"Verification", font, true, new Event(){ 
+		addMenuItem(DownloadMenu,"Verification", font, false, new Event(){ 
 			public void events() {
 				System.exit(0);
 			}
@@ -140,7 +147,7 @@ public class mainDesktop extends javax.swing.JFrame {
 		JMenu PreferencesMenu = new JMenu("Preferences");
 		PreferencesMenu.setFont(font);	
 		
-		addMenuItem(PreferencesMenu,"Preferences", font, true, new Event(){ 
+		addMenuItem(PreferencesMenu,"Preferences", font, false, new Event(){ 
 			public void events() {
 				System.exit(0);
 			}
@@ -155,7 +162,6 @@ public class mainDesktop extends javax.swing.JFrame {
 		Font font = new Font("Verdana", Font.PLAIN, 11);
 		
 		JMenuBar menuBar = new JMenuBar();
-		ArrayList<JMenu> menu = new ArrayList<JMenu>();
 		
 		menu.add(StructureMenu(font));
 		menu.add(DownloadMenu(font));
@@ -163,7 +169,7 @@ public class mainDesktop extends javax.swing.JFrame {
 		
 		for(JMenu m:menu)
 			menuBar.add(m);
-		
+		menu.get(1).getItem(0).setEnabled(ñreateStructureEmitets.isCreate());
 		frame.setJMenuBar(menuBar);
 		frame.setPreferredSize(new Dimension(270, 225));
 		frame.pack();
@@ -190,8 +196,10 @@ public class mainDesktop extends javax.swing.JFrame {
 					JOptionPane.YES_NO_OPTION, 
 					JOptionPane.QUESTION_MESSAGE, 
 					null, options, options[0]);
-			if(n==0)
+			if(n==0){
 				cTh.interrupt();
+				menu.get(1).getItem(0).setEnabled(true);
+			}
 		}
 	}
 	
