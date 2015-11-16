@@ -17,9 +17,13 @@ public class downloadEmitets{
 	public Iterator<Date> DateIterator;
 	public listEmitets listEm = new listEmitets();
 	private Calendar calendar = Calendar.getInstance();
+	public Date date;
+	public String codes;
 	
 	public downloadEmitets() throws IOException{//при создании объекта зупускаем функцию 
+		System.out.println("Начало");
 		start();
+		System.out.println("конец");
 	}
 	
 	public int getDays(Date start, Date end){ // Сравниваем две даты
@@ -40,46 +44,68 @@ public class downloadEmitets{
 		l = calendar.getTimeInMillis() - l;
 		return (int) (l / (24 * 60 * 60 * 1000));
 	}
-	public cortegDataLoad datesLoad(readDateFile rDF){//осуществляем все операции с датами
+	public cortegDataLoad datesLoad(readDateFile rDF, Boolean flag){//осуществляем все операции с датами
 		Calendar cal1 = Calendar.getInstance();
 		Calendar cal2 = Calendar.getInstance();
-		
-		if(rDF.dates!=null)
-			cal1.setTime(rDF.dates);
-		else
+		if(flag==true){
 			cal1.set(2000, Calendar.JANUARY, 1);
-		
+		}else{
+			if(rDF.dates!=null)
+				cal1.setTime(rDF.dates);
+			else
+				cal1.set(2000, Calendar.JANUARY, 1);
+		}
 		Date dates1 = cal1.getTime();
 		Date dates2 = cal2.getTime();
 		Iterator<Date> Idate = GenericDate(dates1);
 		int days = getDays(dates1, dates2);
-		System.out.println("days = "+days);
 		return new cortegDataLoad(cal1, cal2, Idate, days);
 	}
-	
+	@SuppressWarnings(value = {"deprecation" })
 	public void start() throws IOException{//Пока функция реализует вложенный массив для перебора всех эмитетов и дат
 		mainDesktop mD = mainDesktop.getInstance();
 		controlThread cTh = controlThread.getInstance();
-		
+		Boolean flag = false;
 		try {
 			Emitets = listEm.getEmitets();
 			readDateFile rDF = new readDateFile(Emitets);
 			for(int i=rDF.poz;i<Emitets.size();i++){
-				cortegDataLoad cDL = datesLoad(rDF);
+				cortegDataLoad cDL = datesLoad(rDF,flag);
+				flag = true;
 				DateIterator = cDL.dates;
 				mD.JPr.setMaximum(cDL.days);
 				int j=0;
 
 				while( DateIterator.hasNext()){
-					Date date = DateIterator.next();
+					date = DateIterator.next();
+					codes = Emitets.get(i).codes;
 					cTh.closeThead("loadEmitets", Emitets.get(i).codes, date);
 					new onlyDateEmitets(generateURL(Emitets.get(i), date),Emitets.get(i).codes);
 					System.out.println(generateURL(Emitets.get(i), date));					
 					mD.JPr.setValue(j++);
 				}
 			}
+			System.out.println("Данные загружены");
+			Thread Th = cTh.setMap("loadEmitets");
+			cTh.removeMap("loadEmitets");
+			Th.stop();
 		} catch (SQLException e) {
+			System.err.println("Приложение остановлено из-за ошибки SQL:");
+			System.err.println("В эмитете:" + codes);
+			System.err.println("На дату:" + date);
+			System.err.println("Стек вызовов");
 			e.printStackTrace();
+			cTh.setMap("loadEmitets").interrupt();
+			cTh.closeThead("loadEmitets", codes, date);
+			
+		}catch (NumberFormatException e) {
+			System.err.println("Приложение остановлено из-за ошибки NumberFormatException:");
+			System.err.println("В эмитете:" + codes);
+			System.err.println("На дату:" + date);
+			System.err.println("Стек вызовов");
+			e.printStackTrace();
+			cTh.setMap("loadEmitets").interrupt();
+			cTh.closeThead("loadEmitets", codes, date);
 		} 
 	}
 	

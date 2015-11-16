@@ -27,7 +27,7 @@ public class ñreateStructureEmitets {
 			PreparedStatement pstmt = con.prepareStatement("{call infoCount()}");
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next())
-				flag = (rs.getInt("cnt")>2)?true:false;
+				flag = (rs.getInt("cnt")>5)?true:false;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

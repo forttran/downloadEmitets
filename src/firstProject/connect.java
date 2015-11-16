@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class connect {
-	public String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=myFirst;user=forttran;password=123;";
+	public String connectionUrl = "jdbc:sqlserver://localhost:1433;databaseName=myFirst3;user=forttran;password=123;";
 	public Connection con = null;
 	public connect(){
 		try {

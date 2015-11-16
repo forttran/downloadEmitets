@@ -31,12 +31,18 @@ public class readDateFile {
 			readerDate();
 			code = String.valueOf(a);
 			dates = DF.parse(String.valueOf(b));
-			
+			code=code.trim();
+			System.out.println(code);
+			System.out.println(dates);
 			for(int i = 0; i < emitets.size(); i++){
-				if(emitets.get(i).codes == code){
+				System.out.println("emitets.get(i).codes=" + emitets.get(i).codes+ "||");
+				System.out.println("code=" + code + "||");
+				if(emitets.get(i).codes.equals(code)){
 					this.poz = i;
+					break;
 				}
 			}
+			System.out.println("poz = " + poz);
 		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Не найдены файлы code.txt и date.txt...");

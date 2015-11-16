@@ -58,7 +58,7 @@ public class httpRequest {
 			rd.close(); 
 			return res;
 		}else{
-			System.out.println("Error");
+			System.out.println("Не могу подключиться к списку эмитетов на finam. Скорее всего сервер не доступен");
 			System.exit(0);
 		}
 		return null;

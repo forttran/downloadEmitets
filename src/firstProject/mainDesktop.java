@@ -121,10 +121,10 @@ public class mainDesktop extends javax.swing.JFrame {
 		addMenuItem(DownloadMenu,"Download", font, false, new Event(){ 
 			public void events() {
 				menu.get(1).getItem(0).setEnabled(false);
-				Thread loadEmitets = new Thread(new ThreadDownloadEmitets());
 				controlThread cTh = controlThread.getInstance();
-				cTh.getMap("loadEmitets", loadEmitets);
+				cTh.getMap("loadEmitets", new Thread(new ThreadDownloadEmitets()));
 				cTh.setMap("loadEmitets").start();
+				//System.out.println("конец олл");
 			}
 		});	
 		

@@ -4,10 +4,11 @@
 package firstProject;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class onlyDateEmitets {
-	public onlyDateEmitets(String url,String code) throws IOException{
+	public onlyDateEmitets(String url,String code) throws IOException, SQLException, NumberFormatException{
 		//Long a = System.currentTimeMillis();
 		httpRequest date = new httpRequest(url);
 		//Long b = System.currentTimeMillis() - a;

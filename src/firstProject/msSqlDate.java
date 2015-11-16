@@ -39,9 +39,8 @@ public class msSqlDate {
 		}
 	}
 	
-	public void InsertDate(String nameTable, List<String[]> date) {//функция добавления котировок в таблицы.
+	public void InsertDate(String nameTable, List<String[]> date) throws SQLException, NumberFormatException {//функция добавления котировок в таблицы.
 		PreparedStatement pstmt;
-		try {
 			pstmt = con.prepareStatement("{call AddEmitets(?,?,?,?,?)}");
 			int i=0;
 			for(String[] tick:date){
@@ -49,13 +48,10 @@ public class msSqlDate {
 				pstmt.setInt(2, new Integer(tick[0]));
 				pstmt.setInt(3, new Integer(tick[1]));
 				pstmt.setFloat(4, new Float(tick[2]));
-				pstmt.setInt(5, new Integer(tick[3]));
+				pstmt.setLong(5, new Long(tick[3]));
 				rs = pstmt.execute();  
 				i++;
 			}
 			System.out.println("Добавлено: " + i);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 	}
 }

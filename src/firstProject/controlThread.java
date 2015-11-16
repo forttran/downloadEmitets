@@ -19,13 +19,17 @@ public class controlThread{
 		Thread Th = ThMap.get(key);
 		return Th;
 	}
+	public void removeMap (String key){
+		ThMap.remove(key);
+	}
+	@SuppressWarnings(value = {"deprecation" })
 	public void closeThead(String nameThread,String codes, Date date){
 		Thread ThLoad = setMap(nameThread);
 		if(ThLoad.isInterrupted()){
 			System.out.println("прерываюсь");
 			new writeDateFile(codes, date);
 			System.out.println("записал");
-			ThMap.remove(nameThread);
+			removeMap(nameThread);
 			ThLoad.stop();
 		}
 	}
