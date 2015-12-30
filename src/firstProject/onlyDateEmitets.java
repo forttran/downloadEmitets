@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class onlyDateEmitets {
-	public onlyDateEmitets(String url,String code) throws IOException, SQLException, NumberFormatException{
+	public String connect="";
+	public onlyDateEmitets(String url,String code, String...connect) throws IOException, SQLException, NumberFormatException{
 		//Long a = System.currentTimeMillis();
 		httpRequest date = new httpRequest(url);
 		//Long b = System.currentTimeMillis() - a;
@@ -22,7 +23,13 @@ public class onlyDateEmitets {
 		}*/
 		// b = System.currentTimeMillis() - a;
 		//System.out.println("Получили данные " + b);
-		msSqlDate Date = new msSqlDate();
+		for(String s:connect) this.connect=s;
+		msSqlDate Date;
+		if(this.connect!=""){
+			Date = new msSqlDate(this.connect);
+		}else{
+			Date = new msSqlDate();
+		}
 		//b = System.currentTimeMillis() - a;
 		//System.out.println("Законектились к базе " + b);
 		Date.InsertDate(code, dt);

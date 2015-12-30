@@ -16,7 +16,7 @@ public class downloadEmitets{
 	public ArrayList<emitets> Emitets = new ArrayList<emitets>();
 	public Iterator<Date> DateIterator;
 	public listEmitets listEm = new listEmitets();
-	private Calendar calendar = Calendar.getInstance();
+	private static Calendar calendar = Calendar.getInstance();
 	public Date date;
 	public String codes;
 	
@@ -26,7 +26,7 @@ public class downloadEmitets{
 		System.out.println("конец");
 	}
 	
-	public int getDays(Date start, Date end){ // Сравниваем две даты
+	public static int getDays(Date start, Date end){ // Сравниваем две даты
 		calendar.setTime(start);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -44,7 +44,7 @@ public class downloadEmitets{
 		l = calendar.getTimeInMillis() - l;
 		return (int) (l / (24 * 60 * 60 * 1000));
 	}
-	public cortegDataLoad datesLoad(readDateFile rDF, Boolean flag){//осуществляем все операции с датами
+	public static cortegDataLoad datesLoad(readDateFile rDF, Boolean flag){//осуществляем все операции с датами
 		Calendar cal1 = Calendar.getInstance();
 		Calendar cal2 = Calendar.getInstance();
 		if(flag==true){
@@ -109,7 +109,7 @@ public class downloadEmitets{
 		} 
 	}
 	
-	public Iterator<Date> GenericDate(Date... dates){//Создаем итератор дат. Если вторая не задана берем текущую дату
+	public static Iterator<Date> GenericDate(Date... dates){//Создаем итератор дат. Если вторая не задана берем текущую дату
 		Date StartDate = dates[0];
 		Date EndDate = (dates.length > 1 && dates[1] != null)?dates[1]: new Date();
 				
@@ -118,7 +118,7 @@ public class downloadEmitets{
 	}
 	
 
-	public String generateURL(emitets Emitet, Date date){//генерируем ссылку
+	public static String generateURL(emitets Emitet, Date date){//генерируем ссылку
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 		String dt = dateFormat.format(date).toString();
 		String[] dtr = dt.split("\\.");

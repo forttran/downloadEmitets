@@ -13,12 +13,17 @@ public class msSqlDate {
 	public boolean rs;
 	public Boolean quation = false;
 	public List<String[]> data;
+	public String connect="";
 	
-	public msSqlDate(){
-		connect();
-	}
-	public void connect() {//коннектимся
-		con = new connect().getConnector(); 
+	public msSqlDate(String...connect){
+		for(String s:connect) this.connect=s;
+		if(this.connect!=""){
+			con = new connect(this.connect).getConnector();
+			System.out.println("коннект1 = "+this.connect);
+		}else{
+			con = new connect().getConnector();
+			System.out.println("коннект1 = "+this.connect);
+		}
 	}
 	
 	public void createStructure(ArrayList<emitets> date){//создание таблиц с названием эмитетов и их ID
@@ -52,6 +57,6 @@ public class msSqlDate {
 				rs = pstmt.execute();  
 				i++;
 			}
-			System.out.println("Добавлено: " + i);
+			//System.out.println("Добавлено: " + i);
 	}
 }

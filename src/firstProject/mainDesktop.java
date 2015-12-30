@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
 
 
 @SuppressWarnings("serial")
@@ -114,7 +115,35 @@ public class mainDesktop extends javax.swing.JFrame {
 		frame.repaint();
 		frame.revalidate();    
 	}
+	
+	public void CreateJListEmitetsReload(){ //создание списка эмитетов для обновления с индикаторами потребности докачки.
 		
+		JP = new JPanel(new GridLayout(2,0));
+		JP1 = new JPanel(new FlowLayout());
+		JP2 = new JPanel(new GridLayout(1,0));
+		JPr = new JProgressBar();
+		JPr.setMinimum(0);
+		JP1.add(JPr);
+				
+		TableModel model = null;
+		try {
+			model = new MyTableModel(new listEmitets().getEmitets());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+               
+		JTable table = new JTable(model);
+		JScrollPane JS = new JScrollPane( table);
+
+		JP.add(JP1);
+		JP.add(JP2);
+		JP2.add(JS);
+		frame.getContentPane().add(JP);
+		frame.repaint();
+		frame.revalidate(); 
+	}
+	
+	
 	public JMenu DownloadMenu(Font font){//меню загрузки
 		JMenu DownloadMenu = new JMenu("Download");
 		DownloadMenu.setFont(font);
@@ -130,7 +159,10 @@ public class mainDesktop extends javax.swing.JFrame {
 		
 		addMenuItem(DownloadMenu,"Reload", font, false, new Event(){ 
 			public void events() {
-				System.exit(0);
+				menu.get(1).getItem(1).setEnabled(false);
+				controlThread cTh = controlThread.getInstance();
+				cTh.getMap("reloadEmitets", new Thread(new ThreadReloadEmitets()));
+				cTh.setMap("reloadEmitets").start();
 			}
 		});	
 		
@@ -170,6 +202,7 @@ public class mainDesktop extends javax.swing.JFrame {
 		for(JMenu m:menu)
 			menuBar.add(m);
 		menu.get(1).getItem(0).setEnabled(сreateStructureEmitets.isCreate());
+		menu.get(1).getItem(1).setEnabled(сreateStructureEmitets.isCreate());
 		frame.setJMenuBar(menuBar);
 		frame.setPreferredSize(new Dimension(270, 225));
 		frame.pack();
